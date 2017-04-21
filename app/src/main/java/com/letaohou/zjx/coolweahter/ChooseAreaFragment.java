@@ -1,6 +1,7 @@
 package com.letaohou.zjx.coolweahter;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.letaohou.zjx.coolweahter.db.City;
 import com.letaohou.zjx.coolweahter.db.County;
 import com.letaohou.zjx.coolweahter.db.Province;
+import com.letaohou.zjx.coolweahter.gson.Weather;
 import com.letaohou.zjx.coolweahter.util.HttpUtil;
 import com.letaohou.zjx.coolweahter.util.Utility;
 
@@ -92,9 +94,15 @@ public class ChooseAreaFragment extends Fragment{
                 if (currentLevel==LEVEL_PROVINCE){
                     selectedProvince=provinceList.get(position);
                     queryCity();
-                }else if (currentLevel==LEVEL_COUNT){
+                }else if (currentLevel==LEVEL_CITY){
                     selectedCity=cityList.get(position);
                     queryCounty();
+                } else if (currentLevel==LEVEL_COUNT){
+                    String weatherId=countyList.get(position).getWeatherId();
+                    Intent intent=new Intent(getActivity(), WeaherActivity.class);
+                    intent.putExtra("weather_id",weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
@@ -261,7 +269,7 @@ public class ChooseAreaFragment extends Fragment{
         }else {
             int provinceCode=selectedProvince.getProvinceCode();
             int cityCode=selectedCity.getCityCode();
-            String address="http://guolin.tech/china/"+provinceCode+"/"+cityCode;
+            String address="http://guolin.tech/api/china/"+provinceCode+"/"+cityCode;
             queryFromServer(address,"county");
         }
 

@@ -6,7 +6,7 @@ package com.letaohou.zjx.coolweahter.gson;
 
 public class AQI  {
 
-    public AQICity aqiCity;
+    public AQICity city;
 
     public class AQICity{
 
