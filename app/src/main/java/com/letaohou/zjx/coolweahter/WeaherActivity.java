@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ public class WeaherActivity extends AppCompatActivity {
     private TextView carWashText;
     private TextView sporText;
     private ImageView bingPicImg;
+    private SwipeRefreshLayout swipeRefresh;
 
 
 
@@ -77,26 +79,26 @@ public class WeaherActivity extends AppCompatActivity {
         comfortText= (TextView) findViewById(R.id.comfort_text);
         carWashText= (TextView) findViewById(R.id.car_wash_text);
         sporText= (TextView) findViewById(R.id.sport_text);
-
         bingPicImg= (ImageView) findViewById(R.id.bing_pic_img);
-
-
-
+        swipeRefresh= (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
 
 
         SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
 
         String weatherString=preferences.getString("weather",null);
+        final String weatherId;
         if (weatherString!=null){
 
             Weather weather= Utility.handleWetherResponse(weatherString);
+             weatherId=weather.basic.weatherId;
             showWeatherInfo(weather);
 
         }else {
 
+
             weatherLayout.setVisibility(View.INVISIBLE);
 
-            String weatherId=getIntent().getStringExtra("weather_id");
+            weatherId=getIntent().getStringExtra("weather_id");
             requsetWeather(weatherId);
         }
 
@@ -104,15 +106,21 @@ public class WeaherActivity extends AppCompatActivity {
         String bingPic=preferences.getString("bing_pic",null);
         if (bingPic!=null){
             Glide.with(this).load(bingPic).into(bingPicImg);
-            Log.e("Weather","加载。。。。");
+
         }else {
             loadBingPic();
-            Log.e("Weather","加载。。。。12");
         }
 
 
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requsetWeather(weatherId);
+            }
+        });
 
     }
+
 
 
 
@@ -127,6 +135,7 @@ public class WeaherActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(WeaherActivity.this,"获取天气信息失败",Toast.LENGTH_LONG).show();
+                        swipeRefresh.setRefreshing(false);
                     }
                 });
             }
@@ -148,8 +157,11 @@ public class WeaherActivity extends AppCompatActivity {
 
                                loadBingPic();
 
+                               swipeRefresh.setRefreshing(false);
+
                            }else {
                                Toast.makeText(WeaherActivity.this,"获取天气信息失败",Toast.LENGTH_LONG).show();
+                               swipeRefresh.setRefreshing(false);
                            }
                        }
                    });
