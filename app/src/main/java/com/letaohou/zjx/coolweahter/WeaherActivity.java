@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.letaohou.zjx.coolweahter.gson.Forecast;
 import com.letaohou.zjx.coolweahter.gson.Weather;
 import com.letaohou.zjx.coolweahter.util.HttpUtil;
@@ -41,6 +44,8 @@ public class WeaherActivity extends AppCompatActivity {
     private TextView comfortText;
     private TextView carWashText;
     private TextView sporText;
+    private ImageView bingPicImg;
+
 
 
 
@@ -62,6 +67,11 @@ public class WeaherActivity extends AppCompatActivity {
         carWashText= (TextView) findViewById(R.id.car_wash_text);
         sporText= (TextView) findViewById(R.id.sport_text);
 
+        bingPicImg= (ImageView) findViewById(R.id.bing_pic_img);
+
+
+
+
 
         SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -77,6 +87,16 @@ public class WeaherActivity extends AppCompatActivity {
 
             String weatherId=getIntent().getStringExtra("weather_id");
             requsetWeather(weatherId);
+        }
+
+
+        String bingPic=preferences.getString("bing_pic",null);
+        if (bingPic!=null){
+            Glide.with(this).load(bingPic).into(bingPicImg);
+            Log.e("Weather","加载。。。。");
+        }else {
+            loadBingPic();
+            Log.e("Weather","加载。。。。12");
         }
 
 
@@ -114,6 +134,9 @@ public class WeaherActivity extends AppCompatActivity {
                                editor.putString("weather",responseText);
                                editor.apply();
                                showWeatherInfo(weather);
+
+                               loadBingPic();
+
                            }else {
                                Toast.makeText(WeaherActivity.this,"获取天气信息失败",Toast.LENGTH_LONG).show();
                            }
@@ -124,6 +147,37 @@ public class WeaherActivity extends AppCompatActivity {
         });
 
     }
+
+
+    public void loadBingPic(){
+
+        String requestBingPic="http://guolin.tech/api/bing_pic";
+       HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
+           @Override
+           public void onFailure(Call call, IOException e) {
+
+           }
+
+           @Override
+           public void onResponse(Call call, Response response) throws IOException {
+
+               final String bingPic=response.body().string();
+
+               SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(WeaherActivity.this).edit();
+                editor.putString("bing_pic",bingPic);
+                editor.apply();
+               runOnUiThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       Glide.with(WeaherActivity.this).load(bingPic).into(bingPicImg);
+                   }
+               });
+
+
+           }
+       });
+        }
+
 
 
     public void showWeatherInfo(Weather weather){

@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.letaohou.zjx.coolweahter.db.Province;
 import com.letaohou.zjx.coolweahter.util.HttpUtil;
@@ -22,6 +23,9 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,4 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-}
+
+
+
+
+
+
+    }
+

@@ -3,6 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <ImageView
+        android:id="@+id/bing_pic_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+
     <fragment
         android:name="com.letaohou.zjx.coolweahter.ChooseAreaFragment"
         android:id="@+id/choose_area_fragment"
