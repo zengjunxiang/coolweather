@@ -1,6 +1,7 @@
 package com.letaohou.zjx.coolweahter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.letaohou.zjx.coolweahter.gson.Forecast;
 import com.letaohou.zjx.coolweahter.gson.Weather;
+import com.letaohou.zjx.coolweahter.service.AutoUpdateService;
 import com.letaohou.zjx.coolweahter.util.HttpUtil;
 import com.letaohou.zjx.coolweahter.util.Utility;
 
@@ -231,6 +233,14 @@ public class WeaherActivity extends AppCompatActivity {
         wetherInfoText.setText(weatherInfo);
 
         forecastLayout.removeAllViews();
+
+        if (weather!=null&&"ok".equals(weather.status)){
+            Intent intent=new Intent(this, AutoUpdateService.class);
+            startService(intent);
+        }else {
+            Toast.makeText(WeaherActivity.this,"获取天气信息失败",Toast.LENGTH_LONG).show();
+        }
+
 
         for (Forecast forecast:weather.forecastList){
             View view= LayoutInflater.from(this).inflate(R.layout.forecast_item,forecastLayout,false);

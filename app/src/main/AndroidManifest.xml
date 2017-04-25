@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.letaohou.zjx.coolweahter">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,6 +11,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service android:name=".service.AutoUpdateService"/>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,8 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".WeaherActivity" />
 
-        <activity android:name=".WeaherActivity"/>
+        <!--<service-->
+            <!--android:name=".service.AutoUpdateService"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true">-->
+            <!---->
+        <!--</service>-->
     </application>
 
 </manifest>
