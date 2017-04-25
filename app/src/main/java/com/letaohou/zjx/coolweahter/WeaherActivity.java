@@ -7,11 +7,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -48,7 +51,9 @@ public class WeaherActivity extends AppCompatActivity {
     private TextView carWashText;
     private TextView sporText;
     private ImageView bingPicImg;
-    private SwipeRefreshLayout swipeRefresh;
+    public SwipeRefreshLayout swipeRefresh;
+    public DrawerLayout drawerLayout;
+    private Button navBtn;
 
 
 
@@ -81,6 +86,8 @@ public class WeaherActivity extends AppCompatActivity {
         sporText= (TextView) findViewById(R.id.sport_text);
         bingPicImg= (ImageView) findViewById(R.id.bing_pic_img);
         swipeRefresh= (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        drawerLayout= (DrawerLayout) findViewById(R.id.drawer_layout);
+        navBtn= (Button) findViewById(R.id.nav_button);
 
 
         SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
@@ -116,6 +123,14 @@ public class WeaherActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 requsetWeather(weatherId);
+            }
+        });
+
+        navBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("navBtn","侧滑按钮被点击了。。。。");
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
