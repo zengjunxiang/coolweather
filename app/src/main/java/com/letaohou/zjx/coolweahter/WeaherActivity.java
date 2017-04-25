@@ -151,7 +151,7 @@ public class WeaherActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(WeaherActivity.this,"获取天气信息失败",Toast.LENGTH_LONG).show();
+                        Toast.makeText(WeaherActivity.this,"获取天气信息失败1",Toast.LENGTH_LONG).show();
                         swipeRefresh.setRefreshing(false);
                     }
                 });
@@ -177,7 +177,7 @@ public class WeaherActivity extends AppCompatActivity {
                                swipeRefresh.setRefreshing(false);
 
                            }else {
-                               Toast.makeText(WeaherActivity.this,"获取天气信息失败",Toast.LENGTH_LONG).show();
+                               Toast.makeText(WeaherActivity.this,"获取天气信息失败2",Toast.LENGTH_LONG).show();
                                swipeRefresh.setRefreshing(false);
                            }
                        }
@@ -238,7 +238,7 @@ public class WeaherActivity extends AppCompatActivity {
             Intent intent=new Intent(this, AutoUpdateService.class);
             startService(intent);
         }else {
-            Toast.makeText(WeaherActivity.this,"获取天气信息失败",Toast.LENGTH_LONG).show();
+            Toast.makeText(WeaherActivity.this,"获取天气信息失败3",Toast.LENGTH_LONG).show();
         }
 
 
